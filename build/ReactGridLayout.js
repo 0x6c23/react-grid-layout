@@ -78,7 +78,7 @@ var ReactGridLayout = function (_React$Component) {
 
     // We need to regenerate the layout.
     if (newLayoutBase) {
-      var newLayout = (0, _utils.synchronizeLayoutWithChildren)(newLayoutBase, nextProps.children, nextProps.cols, nextProps.maxRows, this.compactType(nextProps));
+      var newLayout = (0, _utils.synchronizeLayoutWithChildren)(newLayoutBase, nextProps.children, nextProps.cols, nextProps.maxRows, nextProps.scaleFactor, this.compactType(nextProps));
       var _oldLayout = this.state.layout;
       this.setState({ layout: newLayout });
       this.onLayoutMaybeChanged(newLayout, _oldLayout);
@@ -378,6 +378,7 @@ var ReactGridLayout = function (_React$Component) {
         containerPadding = _props5.containerPadding,
         rowHeight = _props5.rowHeight,
         maxRows = _props5.maxRows,
+        scaleFactor = _props5.scaleFactor,
         useCSSTransforms = _props5.useCSSTransforms;
 
     // {...this.state.activeDrag} is pretty slow, actually
@@ -396,6 +397,7 @@ var ReactGridLayout = function (_React$Component) {
         margin: margin,
         containerPadding: containerPadding || margin,
         maxRows: maxRows,
+        scaleFactor: scaleFactor,
         rowHeight: rowHeight,
         isDraggable: false,
         isResizable: false,
@@ -424,6 +426,7 @@ var ReactGridLayout = function (_React$Component) {
         containerPadding = _props6.containerPadding,
         rowHeight = _props6.rowHeight,
         maxRows = _props6.maxRows,
+        scaleFactor = _props6.scaleFactor,
         isDraggable = _props6.isDraggable,
         isResizable = _props6.isResizable,
         isBounded = _props6.isBounded,
@@ -447,6 +450,7 @@ var ReactGridLayout = function (_React$Component) {
         margin: margin,
         containerPadding: containerPadding || margin,
         maxRows: maxRows,
+        scaleFactor: scaleFactor,
         rowHeight: rowHeight,
         cancel: draggableCancel,
         handle: draggableHandle,
@@ -562,6 +566,9 @@ ReactGridLayout.propTypes = {
   // Intentionally not documented for this reason.
   maxRows: _propTypes2.default.number,
 
+  // The factor the item will scale when dragged
+  scaleFactor: _propTypes2.default.number,
+
   //
   // Flags
   //
@@ -622,6 +629,7 @@ ReactGridLayout.defaultProps = {
   containerPadding: null,
   rowHeight: 150,
   maxRows: Infinity, // infinite vertical growth
+  scaleFactor: 1,
   layout: [],
   margin: [10, 10],
   isDraggable: true,
@@ -645,7 +653,7 @@ var _initialiseProps = function _initialiseProps() {
     activeDrag: null,
     layout: (0, _utils.synchronizeLayoutWithChildren)(this.props.layout, this.props.children, this.props.cols,
     // Legacy support for verticalCompact: false
-    this.props.maxRows, this.compactType()),
+    this.props.maxRows, this.props.scaleFactor, this.compactType()),
     mounted: false,
     oldDragItem: null,
     oldLayout: null,

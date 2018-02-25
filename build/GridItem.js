@@ -105,13 +105,15 @@ var GridItem = function (_React$Component) {
     var _props3 = this.props,
         margin = _props3.margin,
         containerPadding = _props3.containerPadding,
-        rowHeight = _props3.rowHeight;
+        rowHeight = _props3.rowHeight,
+        scaleFactor = _props3.scaleFactor;
 
     var colWidth = this.calcColWidth();
 
     var out = {
       left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
       top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
+      scale: 1,
       // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt
@@ -127,6 +129,12 @@ var GridItem = function (_React$Component) {
     if (state && state.dragging) {
       out.top = Math.round(state.dragging.top);
       out.left = Math.round(state.dragging.left);
+
+      if (scaleFactor !== 1) {
+        out.scale = scaleFactor;
+        out.top = out.top / scaleFactor;
+        out.left = out.left / scaleFactor;
+      }
     }
 
     return out;
@@ -494,6 +502,7 @@ GridItem.propTypes = {
   rowHeight: _propTypes2.default.number.isRequired,
   margin: _propTypes2.default.array.isRequired,
   maxRows: _propTypes2.default.number.isRequired,
+  scaleFactor: _propTypes2.default.number.isRequired,
   containerPadding: _propTypes2.default.array.isRequired,
 
   // These are all in grid units

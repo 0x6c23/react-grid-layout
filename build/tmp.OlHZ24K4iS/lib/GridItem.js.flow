@@ -36,6 +36,7 @@ type Props = {
   containerPadding: [number, number],
   rowHeight: number,
   maxRows: number,
+  scaleFactor: number,
   isDraggable: boolean,
   isResizable: boolean,
   isBounded: boolean,
@@ -82,6 +83,7 @@ export default class GridItem extends React.Component<Props, State> {
     rowHeight: PropTypes.number.isRequired,
     margin: PropTypes.array.isRequired,
     maxRows: PropTypes.number.isRequired,
+    scaleFactor: PropTypes.number.isRequired,
     containerPadding: PropTypes.array.isRequired,
 
     // These are all in grid units
@@ -208,12 +210,13 @@ export default class GridItem extends React.Component<Props, State> {
     h: number,
     state: ?Object
   ): Position {
-    const { margin, containerPadding, rowHeight } = this.props;
+    const { margin, containerPadding, rowHeight, scaleFactor } = this.props;
     const colWidth = this.calcColWidth();
 
     const out = {
       left: Math.round((colWidth + margin[0]) * x + containerPadding[0]),
       top: Math.round((rowHeight + margin[1]) * y + containerPadding[1]),
+      scale: 1,
       // 0 * Infinity === NaN, which causes problems with resize constraints;
       // Fix this if it occurs.
       // Note we do it here rather than later because Math.round(Infinity) causes deopt
@@ -235,6 +238,12 @@ export default class GridItem extends React.Component<Props, State> {
     if (state && state.dragging) {
       out.top = Math.round(state.dragging.top);
       out.left = Math.round(state.dragging.left);
+
+      if(scaleFactor !== 1) {
+        out.scale = scaleFactor;
+        out.top = out.top / scaleFactor;
+        out.left = out.left / scaleFactor;
+      }
     }
 
     return out;

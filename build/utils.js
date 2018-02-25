@@ -413,10 +413,11 @@ function setTransform(_ref2) {
   var top = _ref2.top,
       left = _ref2.left,
       width = _ref2.width,
-      height = _ref2.height;
+      height = _ref2.height,
+      scale = _ref2.scale;
 
   // Replace unitless items with px
-  var translate = "translate(" + left + "px," + top + "px)";
+  var translate = "scale(" + scale + ") translate(" + left + "px," + top + "px)";
   return {
     transform: translate,
     WebkitTransform: translate,
