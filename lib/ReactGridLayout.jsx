@@ -57,6 +57,7 @@ export type Props = {
   containerPadding: [number, number] | null,
   rowHeight: number,
   maxRows: number,
+  scaleFactor: number,
   isDraggable: boolean,
   isResizable: boolean,
   isBounded: boolean,
@@ -147,6 +148,9 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     // Intentionally not documented for this reason.
     maxRows: PropTypes.number,
 
+    // The factor the item will scale when dragged
+    scaleFactor: PropTypes.number,
+
     //
     // Flags
     //
@@ -212,6 +216,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
     containerPadding: null,
     rowHeight: 150,
     maxRows: Infinity, // infinite vertical growth
+    scaleFactor: 1,
     layout: [],
     margin: [10, 10],
     isDraggable: true,
@@ -238,6 +243,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       this.props.cols,
       // Legacy support for verticalCompact: false
       this.props.maxRows,
+      this.props.scaleFactor,
       this.compactType()
     ),
     mounted: false,
@@ -288,6 +294,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         nextProps.children,
         nextProps.cols,
         nextProps.maxRows,
+        nextProps.scaleFactor,
         this.compactType(nextProps)
       );
       const oldLayout = this.state.layout;
@@ -569,6 +576,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       containerPadding,
       rowHeight,
       maxRows,
+      scaleFactor,
       useCSSTransforms
     } = this.props;
 
@@ -586,6 +594,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         margin={margin}
         containerPadding={containerPadding || margin}
         maxRows={maxRows}
+        scaleFactor={scaleFactor}
         rowHeight={rowHeight}
         isDraggable={false}
         isResizable={false}
@@ -613,6 +622,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
       containerPadding,
       rowHeight,
       maxRows,
+      scaleFactor,
       isDraggable,
       isResizable,
       isBounded,
@@ -641,6 +651,7 @@ export default class ReactGridLayout extends React.Component<Props, State> {
         margin={margin}
         containerPadding={containerPadding || margin}
         maxRows={maxRows}
+        scaleFactor={scaleFactor}
         rowHeight={rowHeight}
         cancel={draggableCancel}
         handle={draggableHandle}
