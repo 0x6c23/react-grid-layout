@@ -83,7 +83,8 @@ function cloneLayoutItem(layoutItem) {
     static: Boolean(layoutItem.static),
     // These can be null
     isDraggable: layoutItem.isDraggable,
-    isResizable: layoutItem.isResizable
+    isResizable: layoutItem.isResizable,
+    isBounded: layoutItem.isBounded
   };
 }
 
